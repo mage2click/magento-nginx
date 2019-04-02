@@ -14,8 +14,8 @@ RUN 	mkdir /etc/nginx/certs && \
 
 RUN 	chown -R app:app /etc/nginx/certs /sock /var/cache/nginx/ /var/run/nginx.pid /sock
 
-ARG		port 8443
-ARG		conf default
+ARG		port=8443
+ARG		conf=default
 
 COPY 	conf/nginx.conf /etc/nginx/nginx.conf
 
