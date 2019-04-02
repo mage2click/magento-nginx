@@ -1,6 +1,6 @@
 FROM 	nginx:1.13
 
-LABEL	maintainer=Dmitry Shkolair @shkoliar
+LABEL	maintainer="Dmitry Shkolair @shkoliar"
 
 RUN 	groupadd -g 1000 app && \
  		useradd -g 1000 -u 1000 -d /var/www -s /bin/bash app
