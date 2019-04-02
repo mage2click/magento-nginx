@@ -14,14 +14,14 @@ RUN 	mkdir /etc/nginx/certs && \
 
 RUN 	chown -R app:app /etc/nginx/certs /sock /var/cache/nginx/ /var/run/nginx.pid /sock
 
-ARG		port=8443
-ARG		conf=default
+ENV		PORT=8443
+ENV		CONF=default
 
 COPY 	conf/nginx.conf /etc/nginx/nginx.conf
 
-COPY 	conf/${conf}.conf /etc/nginx/conf.d/default.conf
+COPY 	conf/${CONF}.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 	${port}
+EXPOSE 	${PORT}
 
 USER 	app:app
 
