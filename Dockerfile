@@ -21,14 +21,12 @@ COPY 	conf/nginx.conf /etc/nginx/nginx.conf
 COPY 	conf/default.conf /etc/nginx/conf.d/default.conf.sample
 COPY 	conf/proxy.conf /etc/nginx/conf.d/proxy.conf.sample
 
-COPY 	conf/${conf}.conf /etc/nginx/conf.d/default.conf
+EXPOSE  ${NGINX_EXPOSE}
 
-EXPOSE 	${NGINX_EXPOSE}
-
-RUN 	if [[ "$NGINX_TYPE" == "proxy" ]]; then 
-			cp /etc/nginx/conf.d/proxy.conf.sample /etc/nginx/conf.d/default.conf;
-		else 
-			cp /etc/nginx/conf.d/default.conf.sample /etc/nginx/conf.d/default.conf;
+RUN 	if [[ "$NGINX_TYPE" == "proxy" ]]; then \
+			cp /etc/nginx/conf.d/proxy.conf.sample /etc/nginx/conf.d/default.conf; \
+		else \
+			cp /etc/nginx/conf.d/default.conf.sample /etc/nginx/conf.d/default.conf; \
 		fi
 
 USER 	app:app
