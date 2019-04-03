@@ -14,7 +14,7 @@ RUN 	mkdir /etc/nginx/certs && \
 
 RUN 	chown -R app:app /etc/nginx/certs /sock /var/cache/nginx/ /var/run/nginx.pid /sock
 
-ENV		NGINX_TYPE
+ENV		NGINX_TYPE=default
 ENV		NGINX_EXPOSE=8443
 
 COPY 	conf/nginx.conf /etc/nginx/nginx.conf
