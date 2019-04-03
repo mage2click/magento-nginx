@@ -5,6 +5,7 @@ LABEL	maintainer="Dmitry Shkolair @shkoliar"
 COPY 	conf/nginx.conf /etc/nginx/nginx.conf
 COPY 	conf/default.conf /etc/nginx/conf.d/default.conf.sample
 COPY 	conf/proxy.conf /etc/nginx/conf.d/proxy.conf.sample
+COPY 	conf/under-proxy.conf /etc/nginx/conf.d/under-proxy.conf.sample
 COPY	start.sh /start.sh
 
 RUN 	groupadd -g 1000 app && \
