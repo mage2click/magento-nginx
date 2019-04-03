@@ -14,14 +14,22 @@ RUN 	mkdir /etc/nginx/certs && \
 
 RUN 	chown -R app:app /etc/nginx/certs /sock /var/cache/nginx/ /var/run/nginx.pid /sock
 
-ARG		port=8443
-ARG		conf=default
+ENV		TYPE
+ENV		PORT=8443
 
 COPY 	conf/nginx.conf /etc/nginx/nginx.conf
+COPY 	conf/default.conf /etc/nginx/conf.d/default.conf.sample
+COPY 	conf/proxy.conf /etc/nginx/conf.d/proxy.conf.sample
 
 COPY 	conf/${conf}.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 	${port}
+EXPOSE 	${PORT}
+
+RUN 	if [[ "$PROXY" == "proxy" ]]; then 
+			cp /etc/nginx/conf.d/proxy.conf.sample /etc/nginx/conf.d/default.conf;
+		else 
+			cp /etc/nginx/conf.d/default.conf.sample /etc/nginx/conf.d/default.conf;
+		fi
 
 USER 	app:app
 
