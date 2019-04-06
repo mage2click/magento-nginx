@@ -14,10 +14,6 @@ RUN     addgroup -S -g 1000 app && \
 RUN     touch /var/run/nginx.pid
 RUN     mkdir /sock
 
-RUN     apk update && \
-        apk upgrade && \
-        apk add --no-cache --upgrade varnish
-
 RUN     apk upgrade --update-cache --available && \
         apk add openssl
 
