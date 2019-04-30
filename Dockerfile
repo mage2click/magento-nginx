@@ -22,7 +22,7 @@ RUN     rm -rf /tmp/* /var/cache/apk/*
 RUN     mkdir /etc/nginx/certs && \
         echo -e "\n\n\n\n\n\n\n" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/nginx.key -out /etc/nginx/certs/nginx.crt
 
-RUN     chown -R app:app /etc/nginx/certs/ /sock/ /var/cache/nginx/ /var/run/nginx.pid /etc/nginx/conf.d/
+RUN     chown -R app:app /etc/nginx/certs/ /sock/ /var/cache/nginx/ /var/run/nginx.pid /etc/nginx/nginx.conf /etc/nginx/conf.d/
 RUN     chmod +x /start.sh
 
 ENV     NGINX_TYPE=default
