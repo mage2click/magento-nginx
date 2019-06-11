@@ -1,31 +1,28 @@
-FROM    nginx:1.15-alpine 
+FROM    nginx:1.15-alpine
 
-LABEL   maintainer="Dmitry Shkolair @shkoliar"
+LABEL   maintainer="Mage2click"
 
-COPY    conf/nginx.conf /etc/nginx/nginx.conf
-COPY    conf/default.conf /etc/nginx/conf.d/default.conf.sample
-COPY    conf/proxy.conf /etc/nginx/conf.d/proxy.conf.sample
-COPY    conf/under-proxy.conf /etc/nginx/conf.d/under-proxy.conf.sample
+ENV     NGINX_TYPE=default
+
+COPY    conf/nginx.conf /etc/nginx/
+COPY    conf/conf.d/* /etc/nginx/conf.d/
 COPY    start.sh /start.sh
 
 RUN     addgroup -S -g 1000 app && \
-        adduser -S -g 1000 -u 1000 -h /var/www -s /bin/sh app
-
-RUN     touch /var/run/nginx.pid
-RUN     mkdir /sock
-
-RUN     apk upgrade --update-cache --available && \
-        apk add openssl
-
-RUN     rm -rf /tmp/* /var/cache/apk/*
-
-RUN     mkdir /etc/nginx/certs && \
-        echo -e "\n\n\n\n\n\n\n" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/certs/nginx.key -out /etc/nginx/certs/nginx.crt
-
-RUN     chown -R app:app /etc/nginx/certs/ /sock/ /var/cache/nginx/ /var/run/nginx.pid /etc/nginx/nginx.conf /etc/nginx/conf.d/
-RUN     chmod +x /start.sh
-
-ENV     NGINX_TYPE=default
+        adduser -S -g 1000 -u 1000 -h /var/www -s /bin/ash app && \
+        touch /var/run/nginx.pid && \
+        mkdir -p /etc/nginx/certs/ /sock && \
+        apk add --no-cache --virtual .bootstrap-deps openssl && \
+        cd /etc/nginx/certs/ && \
+        openssl genrsa -out nginx.key 2048 && \
+        openssl req -new -nodes -sha256 -key nginx.key -out nginx.csr -subj /CN=\*.test && \
+        openssl x509 -req -sha256 -days 3650 -in nginx.csr -signkey nginx.key -out nginx.crt && \
+    	chown -R app:app /etc/nginx/certs/ /sock/ /var/cache/nginx/ /var/run/nginx.pid \
+    		/etc/nginx/nginx.conf /etc/nginx/conf.d/ && \
+		chmod +x /start.sh && \
+		apk del .bootstrap-deps && \
+        rm -rf /tmp/* && \
+        rm -rf /var/cache/apk/*
 
 USER    app:app
 

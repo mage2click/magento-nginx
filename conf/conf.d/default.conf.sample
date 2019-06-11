@@ -8,6 +8,7 @@ server {
 }
 
 server {
+	listen 8081;
 	listen 8443 ssl;
 
 	ssl_certificate /etc/nginx/certs/nginx.crt;

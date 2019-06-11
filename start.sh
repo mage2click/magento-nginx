@@ -2,12 +2,12 @@
 
 set -e
 
-if [ "${NGINX_TYPE}" = "proxy" ]; then 
-	cp /etc/nginx/conf.d/proxy.conf.sample /etc/nginx/conf.d/default.conf;
-elif [ "${NGINX_TYPE}" = "under-proxy" ]; then 
-	cp /etc/nginx/conf.d/under-proxy.conf.sample /etc/nginx/conf.d/default.conf;
-else 
-	cp /etc/nginx/conf.d/default.conf.sample /etc/nginx/conf.d/default.conf;
+NGINX_TYPE=${NGINX_TYPE:-default}
+
+if [[ "$NGINX_TYPE" != "proxy" ]] && [[ "$NGINX_TYPE" != "under-proxy" ]] && [[ "$NGINX_TYPE" != "default" ]]; then
+	NGINX_TYPE=default
 fi
+
+cp /etc/nginx/conf.d/${NGINX_TYPE}.conf.sample /etc/nginx/conf.d/default.conf;
 
 nginx -g 'daemon off;'
